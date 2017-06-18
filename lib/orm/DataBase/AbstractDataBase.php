@@ -17,7 +17,7 @@ abstract class AbstractDataBase
     /**
      * AbstractDataBase constructor.
      */
-    protected function __construct()
+    public function __construct()
     {
         try {
             $settings = (object)get_object_vars($this);
