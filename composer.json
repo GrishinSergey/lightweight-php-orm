@@ -1,6 +1,6 @@
 {
   "name": "sagrishin/lightweight-php-orm",
-  "description": "Lightweight ORM for msnipulating data in database",
+  "description": "Lightweight ORM for manipulating data in database",
   "authors": [
     {
       "name": "Sergey Grishin",
