@@ -6,7 +6,7 @@
       "name": "Sergey Grishin",
       "email": "forrirrof@gmail.com"
     }
-  ]
+  ],
   "autoload": {
     "psr-4": { "orm\\": "lib/orm" }
   }
