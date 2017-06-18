@@ -1,0 +1,16 @@
+{
+  "name": "sagrishin/lightweight-php-orm",
+  "description": "Lightweight ORM for msnipulating data in database",
+  "authors": [
+    {
+      "name": "Sergey Grishin",
+      "email": "forrirrof@gmail.com"
+    }
+  ],
+  "require": {
+    "sagrishin/lightweight-php-orm": "dev-master"
+  },
+  "autoload": {
+    "psr-4": { "orm\\": "lib/orm" }
+  }
+}
