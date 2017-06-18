@@ -7,6 +7,9 @@
       "email": "forrirrof@gmail.com"
     }
   ],
+  "require": {
+    "sagrishin/lightweight-php-orm": "v1.1"
+  },
   "autoload": {
     "psr-4": { "orm\\": "lib/orm" }
   }
