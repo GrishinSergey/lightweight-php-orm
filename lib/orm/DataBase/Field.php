@@ -10,12 +10,12 @@ use orm\DataBase\fields\StringField;
 
 
 /**
- * Class Fields
+ * Class Field
  * Contains methods for describing fields and types in database
  * for migrations and controlling types and references in database
  * @package orm\DataBase
  */
-class Fields
+class Field
 {
 
     /**
