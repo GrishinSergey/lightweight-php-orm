@@ -30,8 +30,8 @@ class Book extends Table
     {
         $this->table_name = "books";        // if name of table and this class are not equal, place name of table in this field
         // describe fields type
-        $this->id = Fields::primaryKey();   // describe PrimaryKey (with auto_increment)
-        $this->book = Fields::varchar(100); // describe varchar field of 100 symbools 
+        $this->id = Field::primaryKey();   // describe PrimaryKey (with auto_increment)
+        $this->book = Field::varchar(100); // describe varchar field of 100 symbools 
         $this->initTable();                 // call method for initialisation table
     }
 
@@ -48,8 +48,8 @@ class Author extends Table
     {
         $this->table_name = "authors";
 
-        $this->id = Fields::primaryKey();
-        $this->author = Fields::varchar(100);
+        $this->id = Field::primaryKey();
+        $this->author = Field::varchar(100);
         $this->initTable();
     }
 
@@ -68,13 +68,13 @@ class Library extends Table
     {
         $this->table_name = "library";
 
-        $this->id = Fields::primaryKey();
+        $this->id = Field::primaryKey();
         // describe foreign key with cascade delete and update
         // You need to place class and field in it for foreign key
-        $this->book = Fields::foreignKey(Book::class, "id", [
+        $this->book = Field::foreignKey(Book::class, "id", [
             "on_delete" => "cascade", "on_update" => "cascade"
         ]);
-        $this->author = Fields::foreignKey(Author::class, "id", [
+        $this->author = Field::foreignKey(Author::class, "id", [
             "on_delete" => "cascade", "on_update" => "cascade"
         ]);
         $this->initTable();
