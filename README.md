@@ -32,7 +32,7 @@ class Book extends Table
         // describe fields type
         $this->id = Fields::primaryKey();   // describe PrimaryKey (with auto_increment)
         $this->book = Fields::varchar(100); // describe varchar field of 100 symbools 
-        parent::__construct($this);         // call parent counstructor with parameter $this
+        $this->initTable();                 // call method for initialisation table
     }
 
 }
@@ -50,7 +50,7 @@ class Author extends Table
 
         $this->id = Fields::primaryKey();
         $this->author = Fields::varchar(100);
-        parent::__construct($this);
+        $this->initTable();
     }
 
 }
@@ -77,7 +77,7 @@ class Library extends Table
         $this->author = Fields::foreignKey(Author::class, "id", [
             "on_delete" => "cascade", "on_update" => "cascade"
         ]);
-        parent::__construct($this);
+        $this->initTable();
     }
 
 }
@@ -87,7 +87,7 @@ Now you can use ORM:
 ```php
 // (index.php)
 
-// next you need to init your DataBase
+// now init your DataBase
 $db = new HomeLibrary();
 
 // then you can use ORM:
