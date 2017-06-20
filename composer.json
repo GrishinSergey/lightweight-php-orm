@@ -8,7 +8,7 @@
     }
   ],
   "require": {
-    "sagrishin/lightweight-php-orm": "v1.2.5"
+    "sagrishin/lightweight-php-orm": "v1.1"
   },
   "autoload": {
     "psr-4": { "orm\\": "lib/orm" }
