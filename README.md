@@ -94,17 +94,14 @@ $db = new HomeLibrary();
 
 /* add new book */
 $book1 = new Book();
-$book1->id = 6;
 $book1->book = "Book_56";
 $book1->save();
 /* add new author */
 $author1 = new Author();
-$author1->id = 6;
 $author1->author = "Author1";
 $author1->save();
 /* add information about author and book in library */
 $library = new Library();
-$library->id = 6;
 $library->book = $book1;
 $library->author = $author1;
 $library->save();
