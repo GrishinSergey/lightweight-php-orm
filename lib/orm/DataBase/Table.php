@@ -45,9 +45,9 @@ abstract class Table
     {
         try {
             $data = $this->getTableFields();
-            $pdo_statement = $this->getQueryGeneratorInstance()->insertOrUpdateIfDuplicate(
-                    $this->table_name,
-                    array_keys($data));
+            $pdo_statement = $this
+                    ->getQueryGeneratorInstance()
+                    ->insertOrUpdateIfDuplicate($this->table_name, array_keys($data));
             array_combine(
                     array_map(function ($key) {return ":{$key}";}, array_keys($data)),
                     array_values($data));
@@ -132,6 +132,9 @@ abstract class Table
     }
 
     /**
+     * @todo: not hardcoding the name primarykey. Search it in the table of fields, and then use
+     *
+     *
      * @param $class_name
      * @param $data
      * @return array
@@ -183,7 +186,15 @@ abstract class Table
             if (!$addPrimaryKeyFlag && $this->{$field->name} instanceof PrimaryKey) {
                 continue;
             }
-            $storage[$field->name] = $this->{$field->name};
+            else if (!$addPrimaryKeyFlag && $this->table_fields[$field->name] instanceof ForeignKey) {
+                $primary_key_name = array_keys(array_filter($this->{$field->name}->table_fields, function ($item) {
+                    return $item instanceof PrimaryKey;
+                }));
+                $storage[$field->name] = $this->{$field->name}->{$primary_key_name[0]};
+            }
+            else {
+                $storage[$field->name] = $this->{$field->name};
+            }
         }
         return $storage;
     }
