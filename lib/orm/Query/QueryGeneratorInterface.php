@@ -1,10 +1,11 @@
 <?php
 
+
 namespace orm\Query;
 
 
 /**
- * Interface QueryGeneratorInterface. Base API for all *QueryGenerator classes
+ * Interface QueryGeneratorInterface
  * @package orm\Query
  */
 interface QueryGeneratorInterface
@@ -40,5 +41,19 @@ interface QueryGeneratorInterface
      * @return \PDOStatement, prepared query
      */
     public function selectAll($table);
+
+    /**
+     * Signature of createDataBase query generator.
+     * @param $dbname string, name of database
+     * @return \PDOStatement, prepared query
+     */
+    public function createDataBase($dbname);
+
+    /**
+     * @param $table string, name of table
+     * @param $fields array of objects \DataBase\fields\* with structure of fields of table
+     * @return \PDOStatement, prepared query
+     */
+    public function createTable($table, $fields);
 
 }

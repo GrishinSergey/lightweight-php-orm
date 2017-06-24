@@ -3,9 +3,10 @@
 namespace orm\DataBase;
 
 
+use orm\DataBase\fields\Number;
 use orm\DataBase\fields\DateTime;
-use orm\DataBase\fields\ForeignKey;
 use orm\DataBase\fields\PrimaryKey;
+use orm\DataBase\fields\ForeignKey;
 use orm\DataBase\fields\StringField;
 
 
@@ -17,6 +18,23 @@ use orm\DataBase\fields\StringField;
  */
 class Field
 {
+
+    /**
+     * @param string $type type of number field (int, float, double)
+     * @param int $size size of field
+     * @param string $attribute attribute of field (binary, unsigned)
+     * @param bool $auto_increment, auto_increment flag
+     * @return \orm\DataBase\fields\Number
+     */
+    public static function number($type = "int", $size = 10, $attribute = "", $auto_increment = false)
+    {
+        $obj = new Number();
+        $obj->type = $type;
+        $obj->size = $size;
+        $obj->attribute = $attribute;
+        $obj->auto_increment = $auto_increment;
+        return $obj;
+    }
 
     /**
      * describe PRIMARY KEY with AUTO_INCREMENT

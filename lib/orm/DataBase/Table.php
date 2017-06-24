@@ -45,11 +45,17 @@ abstract class Table
     public function migrate()
     {
         try {
-            (new QueryExecutor(PdoAdapter::getInstance()
-                ->getPdoObject()->prepare(
-                    (new Migration($this->table_fields, $this->table_name))
-                        ->buildMigrationSqlCode()), []))
-                ->executeSql();
+            $generator = $this->getQueryGeneratorInstance();
+            $create_database_query = $generator->createDataBase(QueryMemento::createInstance()->getStorage()["dbname"]);
+            $create_table_query = $generator->createTable($this->table_name, $this->table_fields);
+
+            print_r($create_table_query);
+
+//            (new QueryExecutor(PdoAdapter::getInstance()
+//                ->getPdoObject()->prepare(
+//                    (new Migration($this->table_fields, $this->table_name))
+//                        ->buildMigrationSqlCode()), []))
+//                ->executeSql();
         } catch (\PDOException $e) {
             throw new MigrationException($e->getMessage());
         }
