@@ -5,8 +5,10 @@ namespace orm\Query;
 
 use orm\DataBase\fields\DateTime;
 use orm\DataBase\fields\ForeignKey;
+use orm\DataBase\fields\Number;
 use orm\DataBase\fields\PrimaryKey;
 use orm\DataBase\fields\StringField;
+use orm\Exceptions\ExceptionsMessages;
 use orm\Exceptions\MigrationException;
 
 class MysqlQueryGenerator implements QueryGeneratorInterface
@@ -55,7 +57,7 @@ class MysqlQueryGenerator implements QueryGeneratorInterface
 
     public function createDataBase($dbname)
     {
-        return $this->pdo->prepare("create database if not exists `{$dbname}` default character set utf8 collate" .
+        return $this->pdo->prepare("create database if not exists `{$dbname}` default character set utf8 collate " .
                 "utf8_general_ci;\nuse `{$dbname}`;\n");
     }
 
@@ -69,20 +71,23 @@ class MysqlQueryGenerator implements QueryGeneratorInterface
                 $query .= "`{$key}` {$field->type}({$field->size}) not null primary key auto_increment,\n";
             } elseif ($field instanceof ForeignKey) {
                 $query .= "`{$key}` int not null,\n";
-                $table = new $field->table();
-                $reflection = new \ReflectionClass($table);
+                $current_table = new $field->table();
+                $reflection = new \ReflectionClass($current_table);
                 $property = $reflection->getProperty("table_name");
                 $property->setAccessible(true);
                 $foreign_keys .= "alter table `{$table}` add constraint `{$key}_fk` foreign key (`{$key}`)" .
-                        " references `{$property->getValue($table)}` (`{$field->field}`) on delete " .
+                        " references `{$property->getValue($current_table)}` (`{$field->field}`) on delete " .
                         "{$field->on_delete} on update {$field->on_update};\n";
                 $property->setAccessible(false);
             } elseif ($field instanceof StringField) {
                 $query .= "`{$key}` {$field->type}({$field->size}) not null,\n";
             } elseif ($field instanceof DateTime) {
                 $query .= "`{$key}` {$field->type} not null,\n";
+            } elseif ($field instanceof Number) {
+                $auto_increment = ($field->auto_increment) ? "auto_increment" : "";
+                $query .= "`{$key}` {$field->type}({$field->size}) {$field->attribute} not null {$auto_increment},\n";
             } else {
-                throw new MigrationException("Migration Exception");
+                throw new MigrationException(ExceptionsMessages::unsupportedTypeOfField(gettype($field)));
             }
         }
         return $this->pdo->prepare(substr($query, 0, -2) . "\n) engine=InnoDB default charset=utf8;\n" .

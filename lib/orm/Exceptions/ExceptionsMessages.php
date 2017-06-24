@@ -16,4 +16,9 @@ abstract class ExceptionsMessages
         return "Size of value bigger than size of field. Expected <b>{$valueSize}</b> symbols but received <b>{$fieldSize}</b>";
     }
 
+    public static function unsupportedTypeOfField($type)
+    {
+        return "{$type} is unsupported type of field";
+    }
+
 }

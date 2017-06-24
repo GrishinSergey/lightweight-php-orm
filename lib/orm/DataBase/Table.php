@@ -35,6 +35,9 @@ abstract class Table
      */
     protected $table_name = "";
 
+    /**
+     * Init table, set fields' types and set name of table
+     */
     public function initTable()
     {
         $this->reflection_class = new \ReflectionClass($this);
@@ -42,20 +45,20 @@ abstract class Table
         $this->initTableName();
     }
 
+    /**
+     * Migrate database from classes to sql and execute migration script.
+     * @return bool, true if migration successfully finished
+     * @throws MigrationException
+     */
     public function migrate()
     {
         try {
             $generator = $this->getQueryGeneratorInstance();
-            $create_database_query = $generator->createDataBase(QueryMemento::createInstance()->getStorage()["dbname"]);
-            $create_table_query = $generator->createTable($this->table_name, $this->table_fields);
-
-            print_r($create_table_query);
-
-//            (new QueryExecutor(PdoAdapter::getInstance()
-//                ->getPdoObject()->prepare(
-//                    (new Migration($this->table_fields, $this->table_name))
-//                        ->buildMigrationSqlCode()), []))
-//                ->executeSql();
+            (new QueryExecutor($generator->createDataBase(QueryMemento::createInstance()->getStorage()["dbname"]), []))
+                    ->executeSql();
+            (new QueryExecutor($generator->createTable($this->table_name, $this->table_fields), []))
+                    ->executeSql();
+            return true;
         } catch (\PDOException $e) {
             throw new MigrationException($e->getMessage());
         }
