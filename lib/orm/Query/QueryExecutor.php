@@ -96,7 +96,7 @@ class QueryExecutor
      * select|insertOrUpdate|delete). Substitute data to prepared query
      * and execute it.
      */
-    private function execute()
+    public function execute()
     {
         $this->pdo->beginTransaction();
         $this->query->execute($this->data);

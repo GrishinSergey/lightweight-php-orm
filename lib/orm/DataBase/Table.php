@@ -5,7 +5,10 @@ namespace orm\DataBase;
 
 use orm\DataBase\fields\ForeignKey;
 use orm\DataBase\fields\PrimaryKey;
+use orm\Exceptions\MigrationException;
 use orm\Exceptions\QueryGenerationException;
+use orm\Migrations\Migration;
+use orm\Query\PdoAdapter;
 use orm\Query\QueryExecutor;
 use orm\Query\QueryGeneratorInterface;
 use orm\Query\QueryMemento;
@@ -36,6 +39,19 @@ abstract class Table
         $this->reflection_class = new \ReflectionClass($this);
         $this->table_fields = $this->getTableFields(true);
         $this->initTableName();
+    }
+
+    public function migrate()
+    {
+        try {
+            (new QueryExecutor(PdoAdapter::getInstance()
+                    ->getPdoObject()->prepare(
+                        (new Migration($this->table_fields, $this->table_name))
+                                ->buildMigrationSqlCode()), []))
+                    ->execute();
+        } catch (\PDOException $e) {
+            throw new MigrationException($e->getMessage());
+        }
     }
 
     /**
