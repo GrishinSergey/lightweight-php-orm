@@ -96,10 +96,19 @@ class QueryExecutor
      * select|insertOrUpdate|delete). Substitute data to prepared query
      * and execute it.
      */
-    public function execute()
+    private function execute()
     {
         $this->pdo->beginTransaction();
         $this->query->execute($this->data);
+    }
+
+    /**
+     * Execute pure sql query. Use this only for migrations.
+     */
+    public function executeSql()
+    {
+        $this->execute();
+        $this->pdo->commit();
     }
 
 }

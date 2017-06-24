@@ -1,5 +1,6 @@
 <?php
 
+
 namespace orm\DataBase;
 
 
@@ -45,10 +46,10 @@ abstract class Table
     {
         try {
             (new QueryExecutor(PdoAdapter::getInstance()
-                    ->getPdoObject()->prepare(
-                        (new Migration($this->table_fields, $this->table_name))
-                                ->buildMigrationSqlCode()), []))
-                    ->execute();
+                ->getPdoObject()->prepare(
+                    (new Migration($this->table_fields, $this->table_name))
+                        ->buildMigrationSqlCode()), []))
+                ->executeSql();
         } catch (\PDOException $e) {
             throw new MigrationException($e->getMessage());
         }
