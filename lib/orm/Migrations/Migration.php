@@ -9,6 +9,7 @@ use orm\DataBase\fields\ForeignKey;
 use orm\DataBase\fields\PrimaryKey;
 use orm\DataBase\fields\StringField;
 use orm\Exceptions\MigrationException;
+use orm\Query\QueryMemento;
 
 
 class Migration
@@ -25,8 +26,11 @@ class Migration
 
     public function buildMigrationSqlCode()
     {
+        $dbname = QueryMemento::createInstance()->getStorage()["dbname"];
+        $query = "create database if not exists `{$dbname}` default character set utf8 collate utf8_general_ci;\nuse `{$dbname}`;\n";
+        $query .= "set foreign_key_checks = 0;\n";
         $foreign_keys = "";
-        $query = "drop table if exists `{$this->table_name}`; create table `{$this->table_name}` (\n";
+        $query .= "drop table if exists `{$this->table_name}`; create table `{$this->table_name}` (\n";
         foreach ($this->table_fields as $key => $field) {
             if ($field instanceof PrimaryKey) {
                 $query .= "`{$key}` {$field->type}({$field->size}) not null primary key auto_increment,\n";
@@ -37,8 +41,8 @@ class Migration
                 $property = $reflection->getProperty("table_name");
                 $property->setAccessible(true);
                 $foreign_keys .= "alter table `{$this->table_name}` add constraint `{$key}_fk` foreign key (`{$key}`)" .
-                                " references `{$property->getValue($table)}` (`{$field->field}`) on delete " .
-                                "{$field->on_delete} on update {$field->on_update};\n";
+                    " references `{$property->getValue($table)}` (`{$field->field}`) on delete " .
+                    "{$field->on_delete} on update {$field->on_update};\n";
                 $property->setAccessible(false);
             } elseif ($field instanceof StringField) {
                 $query .= "`{$key}` {$field->type}({$field->size}) not null,\n";
@@ -48,7 +52,7 @@ class Migration
                 throw new MigrationException("Migration Exception");
             }
         }
-        return substr($query, 0, -2) . "\n) ENGINE=InnoDB DEFAULT CHARSET=utf8;\n" . $foreign_keys;
+        return substr($query, 0, -2) . "\n) engine=InnoDB default charset=utf8;\n" . $foreign_keys . "set foreign_key_checks = 1;\n";
     }
 
 }
