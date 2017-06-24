@@ -1,0 +1,5 @@
+
+.idea/*
+lib/HomeLibrary/*
+lib/autoload.php
+lib/index.php
