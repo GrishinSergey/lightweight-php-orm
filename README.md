@@ -129,3 +129,16 @@ foreach ($lib as $item) {
 Book::findFirst(["book" => "Book_56"])->remove();
 
 ```
+
+# update v1.3:
+Now it's possible to migrate classes to tables in database. All you need is describe classes and call migrate method:
+```php
+// migrate.php
+$db = new HomeLibrary();
+$book1 = new Book();
+$book1->migrate();
+$author1 = new Author();
+$author1->migrate();
+$library = new Library();
+$library->migrate();
+```
