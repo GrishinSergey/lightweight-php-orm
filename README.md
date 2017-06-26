@@ -25,14 +25,14 @@ class Book extends Table
     // fields of table in database
     public $id;
     public $book;
-    // override parent constructor, the last action in constructor of table class
+
     public function __construct()
     {
-        $this->table_name = "books";        // if name of table and this class are not equal, place name of table in this field
+        $this->table_name = "books";       // if name of table and this class are not equal, place name of table in this field
         // describe fields type
         $this->id = Field::primaryKey();   // describe PrimaryKey (with auto_increment)
         $this->book = Field::varchar(100); // describe varchar field of 100 symbools 
-        $this->initTable();                 // call method for initialisation table
+        $this->initTable();                // call method for initialisation table
     }
 
 }
