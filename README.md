@@ -142,3 +142,4 @@ $author1->migrate();
 $library = new Library();
 $library->migrate();
 ```
+Be cearful, when you migrate class to table which is exist. Its structure will be replaced to new and all data will be cleaned.
