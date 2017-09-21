@@ -71,11 +71,6 @@ abstract class Table
             $pdo_statement = $this
                     ->getQueryGeneratorInstance()
                     ->insertOrUpdateIfDuplicate($this->table_name, array_keys($data));
-            array_combine(
-                    array_map(function ($key) {
-                        return ":{$key}";
-                    }, array_keys($data)),
-                    array_values($data));
             $query_executor = new QueryExecutor($pdo_statement, array_combine(
                     array_map(function ($key) {
                         return ":{$key}";
