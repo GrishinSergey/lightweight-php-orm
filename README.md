@@ -1,4 +1,4 @@
-# lightweight-php-orm
+# lightweight-php-orm ![code style](https://img.shields.io/badge/StyleCI-passed-green.svg)
 
 Simple ORM based on pattern ActiveRecord.
 
