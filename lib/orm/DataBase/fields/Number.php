@@ -5,17 +5,13 @@
  * @TODO: Create universal class and make 2 children
  */
 
-
 namespace orm\DataBase\fields;
 
-
 /**
- * Class Number
- * @package lib\orm\DataBase\fields
+ * Class Number.
  */
 class Number
 {
-
     /**
      * @var
      */
@@ -32,5 +28,4 @@ class Number
      * @var
      */
     public $auto_increment;
-
 }

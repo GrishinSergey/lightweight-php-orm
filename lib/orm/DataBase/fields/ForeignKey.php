@@ -2,14 +2,11 @@
 
 namespace orm\DataBase\fields;
 
-
 /**
- * Class ForeignKey
- * @package orm\DataBase\fields
+ * Class ForeignKey.
  */
 class ForeignKey
 {
-
     /**
      * @var
      */
@@ -26,5 +23,4 @@ class ForeignKey
      * @var
      */
     public $on_update;
-
 }

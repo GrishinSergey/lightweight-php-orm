@@ -2,14 +2,11 @@
 
 namespace orm\DataBase\fields;
 
-
 /**
- * Class DateTime
- * @package orm\DataBase\fields
+ * Class DateTime.
  */
 class DateTime
 {
-
     /**
      * @var
      */
@@ -18,5 +15,4 @@ class DateTime
      * @var
      */
     public $format;
-
 }

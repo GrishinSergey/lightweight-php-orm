@@ -2,14 +2,11 @@
 
 namespace orm\DataBase\fields;
 
-
 /**
- * Class PrimaryKey
- * @package orm\DataBase\fields
+ * Class PrimaryKey.
  */
 class PrimaryKey
 {
-
     /**
      * @var
      */
@@ -26,5 +23,4 @@ class PrimaryKey
      * @var
      */
     public $primary_key;
-
 }

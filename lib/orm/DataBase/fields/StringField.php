@@ -2,14 +2,11 @@
 
 namespace orm\DataBase\fields;
 
-
 /**
- * Class StringField
- * @package orm\DataBase\fields
+ * Class StringField.
  */
 class StringField
 {
-
     /**
      * @var
      */
@@ -22,5 +19,4 @@ class StringField
      * @var
      */
     public $encoding;
-
 }

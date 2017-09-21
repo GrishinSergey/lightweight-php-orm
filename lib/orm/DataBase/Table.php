@@ -1,27 +1,21 @@
 <?php
 
-
 namespace orm\DataBase;
-
 
 use orm\DataBase\fields\ForeignKey;
 use orm\DataBase\fields\PrimaryKey;
 use orm\Exceptions\MigrationException;
 use orm\Exceptions\QueryGenerationException;
 use orm\Migrations\Migration;
-use orm\Query\PdoAdapter;
 use orm\Query\QueryExecutor;
 use orm\Query\QueryGeneratorInterface;
 use orm\Query\QueryMemento;
 
-
 /**
- * Class Table
- * @package orm\DataBase
+ * Class Table.
  */
 abstract class Table
 {
-
     /**
      * @var null
      */
@@ -33,10 +27,10 @@ abstract class Table
     /**
      * @var string
      */
-    protected $table_name = "";
+    protected $table_name = '';
 
     /**
-     * Init table, set fields' types and set name of table
+     * Init table, set fields' types and set name of table.
      */
     public function initTable()
     {
@@ -47,17 +41,20 @@ abstract class Table
 
     /**
      * Migrate database from classes to sql and execute migration script.
-     * @return bool, true if migration successfully finished
+     *
      * @throws MigrationException
+     *
+     * @return bool, true if migration successfully finished
      */
     public function migrate()
     {
         try {
             $generator = $this->getQueryGeneratorInstance();
-            (new QueryExecutor($generator->createDataBase(QueryMemento::createInstance()->getStorage()["dbname"]), []))
+            (new QueryExecutor($generator->createDataBase(QueryMemento::createInstance()->getStorage()['dbname']), []))
                     ->executeSql();
             (new QueryExecutor($generator->createTable($this->table_name, $this->table_fields), []))
                     ->executeSql();
+
             return true;
         } catch (\PDOException $e) {
             throw new MigrationException($e->getMessage());
@@ -75,10 +72,14 @@ abstract class Table
                     ->getQueryGeneratorInstance()
                     ->insertOrUpdateIfDuplicate($this->table_name, array_keys($data));
             array_combine(
-                    array_map(function ($key) {return ":{$key}";}, array_keys($data)),
+                    array_map(function ($key) {
+                        return ":{$key}";
+                    }, array_keys($data)),
                     array_values($data));
             $query_executor = new QueryExecutor($pdo_statement, array_combine(
-                    array_map(function ($key) {return ":{$key}";}, array_keys($data)),
+                    array_map(function ($key) {
+                        return ":{$key}";
+                    }, array_keys($data)),
                     array_values($data)));
             $this->updateValueOfPrimaryKey($query_executor->insertOrUpdate());
         } catch (\PDOException $e) {
@@ -87,8 +88,9 @@ abstract class Table
     }
 
     /**
-     * @return mixed
      * @throws QueryGenerationException
+     *
+     * @return mixed
      */
     public static function listAll()
     {
@@ -99,6 +101,7 @@ abstract class Table
                     ->getQueryGeneratorInstance()
                     ->selectAll($table->table_name);
             $query_executor = new QueryExecutor($pdo_statement, []);
+
             return $table->fillObjectWithDataFromDataBase(get_called_class(), $query_executor->select());
         } catch (\PDOException $e) {
             throw new QueryGenerationException($e->getMessage());
@@ -107,8 +110,10 @@ abstract class Table
 
     /**
      * @param $data
-     * @return array
+     *
      * @throws QueryGenerationException
+     *
+     * @return array
      */
     public static function find($data)
     {
@@ -119,6 +124,7 @@ abstract class Table
                     ->getQueryGeneratorInstance()
                     ->selectByKeys($table->table_name, array_keys($data));
             $query_executor = new QueryExecutor($pdo_statement, $data);
+
             return $table->fillObjectWithDataFromDataBase(get_called_class(), $query_executor->select());
         } catch (\PDOException $e) {
             throw new QueryGenerationException($e->getMessage());
@@ -127,17 +133,20 @@ abstract class Table
 
     /**
      * @param $data
+     *
      * @return mixed
      */
     public static function findFirst($data)
     {
         $collection = self::find($data);
+
         return (count($collection) === 0) ? null : $collection[0];
     }
 
     /**
-     * @return int
      * @throws QueryGenerationException
+     *
+     * @return int
      */
     public function remove()
     {
@@ -150,7 +159,8 @@ abstract class Table
                     ->delete($this->table_name, array_keys($keys));
             $query_executor = new QueryExecutor(
                     $pdo_statement,
-                    [":" . array_keys($keys)[0] => $this->{array_keys($keys)[0]}]);
+                    [':'.array_keys($keys)[0] => $this->{array_keys($keys)[0]}]);
+
             return $query_executor->delete();
         } catch (\PDOException $e) {
             throw new QueryGenerationException($e->getMessage());
@@ -160,9 +170,9 @@ abstract class Table
     /**
      * @todo: not hardcoding the name primarykey. Search it in the table of fields, and then use
      *
-     *
      * @param $class_name
      * @param $data
+     *
      * @return array
      */
     private function fillObjectWithDataFromDataBase($class_name, $data)
@@ -171,10 +181,11 @@ abstract class Table
         foreach ($data as $item) {
             $obj = new $class_name();
             foreach ($item as $key => $value) {
-                $obj->$key = ($obj->$key instanceof ForeignKey) ? $obj->$key->table::find(["id" => $value])[0] : $value;
+                $obj->$key = ($obj->$key instanceof ForeignKey) ? $obj->$key->table::find(['id' => $value])[0] : $value;
             }
             $result[] = $obj;
         }
+
         return $result;
     }
 
@@ -196,13 +207,15 @@ abstract class Table
      */
     private function getQueryGeneratorInstance()
     {
-        $generator_name = "orm\\Query\\" . ucfirst(QueryMemento::createInstance()
-                ->getStorage()["dbtype"]) . "QueryGenerator";
+        $generator_name = 'orm\\Query\\'.ucfirst(QueryMemento::createInstance()
+                ->getStorage()['dbtype']).'QueryGenerator';
+
         return new $generator_name();
     }
 
     /**
      * @param bool $addPrimaryKeyFlag
+     *
      * @return array
      */
     private function getTableFields($addPrimaryKeyFlag = false)
@@ -211,25 +224,23 @@ abstract class Table
         foreach ($this->reflection_class->getProperties(\ReflectionProperty::IS_PUBLIC) as $field) {
             if (!$addPrimaryKeyFlag && $this->{$field->name} instanceof PrimaryKey) {
                 continue;
-            }
-            else if (!$addPrimaryKeyFlag && $this->table_fields[$field->name] instanceof ForeignKey) {
+            } elseif (!$addPrimaryKeyFlag && $this->table_fields[$field->name] instanceof ForeignKey) {
                 $primary_key_name = array_keys(array_filter($this->{$field->name}->table_fields, function ($item) {
                     return $item instanceof PrimaryKey;
                 }));
                 $storage[$field->name] = $this->{$field->name}->{$primary_key_name[0]};
-            }
-            else {
+            } else {
                 $storage[$field->name] = $this->{$field->name};
             }
         }
+
         return $storage;
     }
 
     private function initTableName()
     {
-        if ($this->table_name == "") {
+        if ($this->table_name == '') {
             $this->table_name = (new \ReflectionClass($this))->getShortName();
         }
     }
-
 }

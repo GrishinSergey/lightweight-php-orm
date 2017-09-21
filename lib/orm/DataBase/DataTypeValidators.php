@@ -2,18 +2,14 @@
 
 namespace orm\DataBase;
 
-
 use orm\Exceptions\ExceptionsMessages;
 use orm\Exceptions\OrmRuntimeException;
 
-
 /**
- * Class DataTypeValidators
- * @package orm\DataBase
+ * Class DataTypeValidators.
  */
 class DataTypeValidators
 {
-
     /**
      * @param $data
      * @param $size
@@ -27,6 +23,7 @@ class DataTypeValidators
      * @param $instance
      * @param $className
      * @param $field
+     *
      * @throws OrmRuntimeException
      */
     public static function foreignKey($instance, $className, $field)
@@ -48,31 +45,37 @@ class DataTypeValidators
     /**
      * @TODO: realize
      */
-    public static function time() {}
+    public static function time()
+    {
+    }
 
     /**
      * @TODO: realize
      */
-    public static function date() {}
+    public static function date()
+    {
+    }
 
     /**
      * @TODO: realize
      */
-    public static function dateTime() {}
+    public static function dateTime()
+    {
+    }
 
     /**
      * @param $data
      * @param $size
+     *
      * @throws OrmRuntimeException
      */
     private static function throwExceptionIfNotStringOrMoreThanTransmittedLength($data, $size)
     {
         if (!is_string($data)) {
-            throw new OrmRuntimeException(ExceptionsMessages::unexpectedTypeOfValue("string", gettype($data)));
+            throw new OrmRuntimeException(ExceptionsMessages::unexpectedTypeOfValue('string', gettype($data)));
         }
         if (strlen($data) > $size) {
             throw new OrmRuntimeException(ExceptionsMessages::sizeOfValueBiggerThanSizeOfField(strlen($data), $size));
         }
     }
-
 }
