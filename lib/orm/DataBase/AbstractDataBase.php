@@ -26,7 +26,7 @@ abstract class AbstractDataBase
                 ->addQueryData('username', $settings->user)
                 ->addQueryData('password', $settings->password);
         } catch (\Exception $exception) {
-            die(new OrmRuntimeException('Expected username and password for mysql server'));
+            throw new OrmRuntimeException('Expected username and password for mysql server')
         }
     }
 }
