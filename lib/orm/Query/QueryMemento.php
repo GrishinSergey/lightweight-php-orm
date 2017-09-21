@@ -7,14 +7,11 @@
 
 namespace orm\Query;
 
-
 /**
- * Class QueryMemento (Realized as patterns Singleton and FluentInterface). Class For storing settings for PDO instance
- * @package orm\Query
+ * Class QueryMemento (Realized as patterns Singleton and FluentInterface). Class For storing settings for PDO instance.
  */
 class QueryMemento
 {
-
     /**
      * @var QueryMemento, static field with instance of class
      */
@@ -26,36 +23,41 @@ class QueryMemento
     private $storage = [];
 
     /**
-     * Create only one instance of QueryMemento
+     * Create only one instance of QueryMemento.
+     *
      * @return QueryMemento, an instance of class QueryMemento
      */
     public static function createInstance()
     {
         if (self::$instance == null) {
-            self::$instance = new QueryMemento();
+            self::$instance = new self();
         }
+
         return self::$instance;
     }
 
     /**
-     * Add setting to storage
+     * Add setting to storage.
+     *
      * @param $key string, key in storage for placing setting
      * @param $value string, setting of PDO connection
+     *
      * @return $this
      */
     public function addQueryData($key, $value)
     {
         $this->storage[$key] = $value;
+
         return $this;
     }
 
     /**
-     * Getter for storage
+     * Getter for storage.
+     *
      * @return array, storage with all settings
      */
     public function getStorage()
     {
         return $this->storage;
     }
-
 }
