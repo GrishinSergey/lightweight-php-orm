@@ -131,7 +131,7 @@ Book::findFirst(["book" => "Book_56"])->remove();
 ```
 
 # update v1.3:
-Now it's possible to migrate classes to tables in database. All you need is describe classes and call migrate method:
+Now it's possible to create tables in database from classes. All you need is describe classes and call migrate method:
 ```php
 // migrate.php
 $db = new HomeLibrary();
@@ -142,4 +142,4 @@ $author1->migrate();
 $library = new Library();
 $library->migrate();
 ```
-Be cearful, when you migrate class to table which is exist. Its structure will be replaced to new and all data will be cleaned.
+Be careful, when you call migrate for tables which are exists in database, their structure will be overwritten and all data will deleted.
