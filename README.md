@@ -11,7 +11,7 @@ final class HomeLibrary extends AbstractDataBase
 {
 
     public $dbtype = "mysql";           // driver for connection and executing queries
-    public $dbname = "HomeLibrary";     // database name (dbname and this class are not equal by case of letters)
+    public $dbname = "homelibrary";     // database name (dbname and this class are not equal by case of letters)
     public $user = "root";              // login
     public $password = "1111";          // password
 
