@@ -2,14 +2,11 @@
 
 namespace orm\Query;
 
-
 use orm\Exceptions\OrmRuntimeException;
 use PDO;
 
-
 class PdoAdapter
 {
-
     private $pdo = null;
 
     private static $instance = null;
@@ -17,8 +14,9 @@ class PdoAdapter
     public static function getInstance()
     {
         if (self::$instance == null) {
-            self::$instance = new PdoAdapter();
+            self::$instance = new self();
         }
+
         return self::$instance;
     }
 
@@ -27,12 +25,12 @@ class PdoAdapter
         try {
             $database = QueryMemento::getInstance()->getStorage();
             $this->pdo = new PDO(
-                "{$database["dbtype"]}:host=localhost;dbname={$database["dbname"]}",
-                $database["username"],
-                $database["password"],
+                "{$database['dbtype']}:host=localhost;dbname={$database['dbname']}",
+                $database['username'],
+                $database['password'],
                 [
                     PDO::MYSQL_ATTR_INIT_COMMAND => "set names 'utf8'",
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+                    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                 ]
             );
         } catch (\PDOException $PDOException) {
@@ -44,5 +42,4 @@ class PdoAdapter
     {
         return $this->pdo;
     }
-
 }

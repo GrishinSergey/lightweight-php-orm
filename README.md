@@ -1,4 +1,4 @@
-# lightweight-php-orm
+# lightweight-php-orm ![code style](https://img.shields.io/badge/StyleCI-passed-green.svg)
 
 Simple ORM based on pattern ActiveRecord.
 
@@ -11,7 +11,7 @@ final class HomeLibrary extends AbstractDataBase
 {
 
     public $dbtype = "mysql";           // driver for connection and executing queries
-    public $dbname = "HomeLibrary";     // database name (dbname and this class are not equal by case of letters)
+    public $dbname = "homelibrary";     // database name (dbname and this class are not equal by case of letters)
     public $user = "root";              // login
     public $password = "1111";          // password
 
@@ -25,14 +25,14 @@ class Book extends Table
     // fields of table in database
     public $id;
     public $book;
-    // override parent constructor, the last action in constructor of table class
+
     public function __construct()
     {
-        $this->table_name = "books";        // if name of table and this class are not equal, place name of table in this field
+        $this->table_name = "books";       // if name of table and this class are not equal, place name of table in this field
         // describe fields type
         $this->id = Field::primaryKey();   // describe PrimaryKey (with auto_increment)
         $this->book = Field::varchar(100); // describe varchar field of 100 symbools 
-        $this->initTable();                 // call method for initialisation table
+        $this->initTable();                // call method for initialisation table
     }
 
 }
@@ -129,3 +129,17 @@ foreach ($lib as $item) {
 Book::findFirst(["book" => "Book_56"])->remove();
 
 ```
+
+# update v1.3:
+Now it's possible to create tables in database from classes. All you need is describe classes and call migrate method:
+```php
+// migrate.php
+$db = new HomeLibrary();
+$book1 = new Book();
+$book1->migrate();
+$author1 = new Author();
+$author1->migrate();
+$library = new Library();
+$library->migrate();
+```
+Be careful, when you call migrate for tables which are exists in database, their structure will be overwritten and all data will deleted.
