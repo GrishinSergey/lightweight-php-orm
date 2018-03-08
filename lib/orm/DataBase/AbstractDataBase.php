@@ -24,7 +24,7 @@ abstract class AbstractDataBase
             if (!isset($settings->dbname)) {
                 $settings->dbname = (new \ReflectionClass($this))->getShortName();
             }
-            QueryMemento::createInstance()
+            QueryMemento::getInstance()
                 ->addQueryData("dbname", $settings->dbname)
                 ->addQueryData("dbtype", $settings->dbtype)
                 ->addQueryData("username", $settings->user)

@@ -29,7 +29,7 @@ class QueryMemento
      * Create only one instance of QueryMemento
      * @return QueryMemento, an instance of class QueryMemento
      */
-    public static function createInstance()
+    public static function getInstance()
     {
         if (self::$instance == null) {
             self::$instance = new QueryMemento();

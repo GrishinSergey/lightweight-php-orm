@@ -25,7 +25,7 @@ class PdoAdapter
     public function __construct()
     {
         try {
-            $database = QueryMemento::createInstance()->getStorage();
+            $database = QueryMemento::getInstance()->getStorage();
             $this->pdo = new PDO(
                 "{$database["dbtype"]}:host=localhost;dbname={$database["dbname"]}",
                 $database["username"],

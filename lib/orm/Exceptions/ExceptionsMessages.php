@@ -21,4 +21,9 @@ abstract class ExceptionsMessages
         return "{$type} is unsupported type of field";
     }
 
+    public static function unsupportedTypeOfQuery($type)
+    {
+        return "{$type} is unsupported type of query";
+    }
+
 }

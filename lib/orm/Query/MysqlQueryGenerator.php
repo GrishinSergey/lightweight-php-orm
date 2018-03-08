@@ -14,12 +14,10 @@ use orm\Exceptions\MigrationException;
 class MysqlQueryGenerator implements QueryGeneratorInterface
 {
 
-    private $databaseData = [];
     private $pdo = null;
 
     public function __construct()
     {
-        $this->databaseData = QueryMemento::createInstance()->getStorage();
         $this->pdo = PdoAdapter::getInstance()->getPdoObject();
     }
 
@@ -44,6 +42,13 @@ class MysqlQueryGenerator implements QueryGeneratorInterface
         return $this->pdo->prepare("delete from {$table} where {$where}");
     }
 
+    public function slice($table, $keys, $from, $to)
+    {
+        $where = implode(" and ", array_map(function ($key) {return "{$key} = :{$key}";}, $keys));
+        $limit = "{$from}" . ($to !== 0) ? ", {$to} " : " ";
+        return $this->pdo->prepare("select * from {$table} where {$where} limit {$limit}");
+    }
+
     public function selectByKeys($table, $keys)
     {
         $where = implode(" and ", array_map(function ($key) {return "{$key} = :{$key}";}, $keys));
@@ -53,6 +58,11 @@ class MysqlQueryGenerator implements QueryGeneratorInterface
     public function selectAll($table)
     {
         return $this->pdo->prepare("select * from {$table}");
+    }
+
+    public function sql($string, $params)
+    {
+        return $this->pdo->prepare($string, $params);
     }
 
     public function createDataBase($dbname)
@@ -93,5 +103,4 @@ class MysqlQueryGenerator implements QueryGeneratorInterface
         return $this->pdo->prepare(substr($query, 0, -2) . "\n) engine=InnoDB default charset=utf8;\n" .
                 $foreign_keys . "set foreign_key_checks = 1;\n");
     }
-
 }

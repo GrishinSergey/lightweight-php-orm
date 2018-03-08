@@ -1,5 +1,6 @@
 {
   "name": "sagrishin/lightweight-php-orm",
+  "license": "MIT",
   "description": "Lightweight ORM for manipulating data in database",
   "authors": [
     {
