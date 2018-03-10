@@ -2,10 +2,8 @@
 
 namespace orm\Exceptions;
 
-
 abstract class ExceptionsMessages
 {
-
     public static function unexpectedTypeOfValue($expectedType, $receivedType)
     {
         return "Unexpected type of value. Expected <b>{$expectedType}</b> but received <b>{$receivedType}</b>";
@@ -25,5 +23,4 @@ abstract class ExceptionsMessages
     {
         return "{$type} is unsupported type of query";
     }
-
 }
